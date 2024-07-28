@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:zc_dodiddone/screens/profile.dart';
 import 'package:zc_dodiddone/screens/all_tasks.dart';
-import 'package:intl/intl.dart'; // Импортируем intl для форматирования даты
+import 'package:intl/intl.dart';
+import 'package:zc_dodiddone/theme/theme.dart'; // Импортируем intl для форматирования даты
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -123,13 +124,21 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
-      body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomCenter,
+            colors: [
+              DoDidDoneTheme.lightTheme.colorScheme.secondary,
+              DoDidDoneTheme.lightTheme.colorScheme.primary,
+            ],
+            stops: const [0.1, 0.9], // Основной цвет занимает 90%
+          ),
+        ),
+        child: Center(
+          child: _widgetOptions.elementAt(_selectedIndex),
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[

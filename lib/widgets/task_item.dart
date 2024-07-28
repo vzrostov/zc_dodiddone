@@ -48,22 +48,22 @@ class TaskItem extends StatelessWidget {
                     ),
                   ),
                 ),
-                // Добавляем кнопки "Выполнено" и "Редактировать" в заголовок
-                IconButton(
-                  onPressed: () {
-                    // Обработка нажатия на кнопку "Выполнено"
-                    // Например, можно удалить задачу из списка
-                    print('Задача выполнена!');
-                  },
-                  icon: const Icon(Icons.check_circle),
-                ),
-                IconButton(
-                  onPressed: () {
-                    // Обработка нажатия на кнопку "Редактировать"
-                    // Например, можно открыть диалог редактирования задачи
-                    print('Задача редактируется!');
-                  },
-                  icon: const Icon(Icons.edit),
+                // Кнопки "Редактировать" и "Удалить"
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end, // Располагаем кнопки по краям
+                  children: [
+                    // Кнопка "Редактировать"
+                    IconButton(
+                      onPressed: () {
+                        // Обработка нажатия на кнопку "Редактировать"
+                        // Например, можно открыть диалог для редактирования задачи
+                        print('Задача редактируется!');
+                      },
+                      icon: const Icon(Icons.edit),
+                    ),
+                    // Кнопка "Удалить"
+                    IconButton(onPressed: () {}, icon: const Icon(Icons.delete)),
+                  ],
                 ),
               ],
             ),

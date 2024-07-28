@@ -38,14 +38,14 @@ class _LoginPageState extends State<LoginPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // Image.asset(
-                  //   'assets/0qode_symbol_1.png', // Замените на правильный путь к файлу
-                  //   height: 60, // Устанавливаем высоту изображения
-                  // ),
+                  Image.asset(
+                    'lib/assets/images/00.png', // Замените на правильный путь к файлу
+                    height: 60, // Устанавливаем высоту изображения
+                  ),
                   const SizedBox(width: 8),
                   // Добавляем текст "zerocoder"
                   Text(
-                    'zerocoder',
+                    'Zerocoder',
                     style: TextStyle(
                       fontSize: 62,
                       fontWeight: FontWeight.bold,
