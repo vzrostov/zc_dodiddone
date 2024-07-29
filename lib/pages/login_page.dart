@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:zc_dodiddone/pages/main_page.dart';
+import 'package:zc_dodiddone/services/firebase_auth.dart';
 import '../theme/theme.dart';
 
 class LoginPage extends StatefulWidget {
@@ -10,6 +12,14 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   bool isLogin = true; // Флаг для определения режима (вход/регистрация)
+
+  final _formKey = GlobalKey<FormState>(); // Ключ для формы
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController(); // Для подтверждения пароля
+
+  final AuthService _authService = AuthService(); // Создаем экземпляр AuthService
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -93,39 +103,12 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
               const SizedBox(height: 30),
-              // Поле логина/почты
-              const TextField(
-                decoration: InputDecoration(
-                  hintText: 'Почта',
-                  filled: true,
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                    borderSide: BorderSide.none,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 20),
-              // Поле пароля
-              const TextField(
-                obscureText: true,
-                decoration: InputDecoration(
-                  hintText: 'Пароль',
-                  filled: true,
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                    borderSide: BorderSide.none,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 20),
-              // **Новое поле "Повторить пароль"**
-              if (!isLogin) // Отображаем только при регистрации
-                const TextField(
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    hintText: 'Повторить пароль',
+
+                // Поле логина/почты
+                TextFormField(
+                  controller: _emailController,
+                  decoration: const InputDecoration(
+                    hintText: 'Почта',
                     filled: true,
                     fillColor: Colors.white,
                     border: OutlineInputBorder(
@@ -133,30 +116,127 @@ class _LoginPageState extends State<LoginPage> {
                       borderSide: BorderSide.none,
                     ),
                   ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Пожалуйста, введите email';
+                    }
+                    if (!value.contains('@')) {
+                      return 'Некорректный email';
+                    }
+                    return null;
+                  },
                 ),
-              const SizedBox(height: 30),
-              // Кнопка "Войти"
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const MainPage()));
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: !isLogin
-                      ? DoDidDoneTheme.lightTheme.colorScheme.primary
-                      : DoDidDoneTheme.lightTheme.colorScheme.secondary,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
-                  textStyle: const TextStyle(fontSize: 18),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
+                const SizedBox(height: 20),
+
+                // Поле пароля
+                TextFormField(
+                  controller: _passwordController,
+                  obscureText: true,
+                  decoration: const InputDecoration(
+                    hintText: 'Пароль',
+                    filled: true,
+                    fillColor: Colors.white,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                      borderSide: BorderSide.none,
+                    ),
                   ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Пожалуйста, введите пароль';
+                    }
+                    if (value.length < 6) {
+                      return 'Пароль должен быть не менее 6 символов';
+                    }
+                    return null;
+                  },
                 ),
-                child: Text(isLogin ? 'Войти' : 'Зарегистрироваться'),
-              ),
+                const SizedBox(height: 20),
+
+                // Поле "Повторить пароль" (только для регистрации)
+                if (!isLogin)
+                  TextFormField(
+                    controller: _confirmPasswordController,
+                    obscureText: true,
+                    decoration: const InputDecoration(
+                      hintText: 'Повторить пароль',
+                      filled: true,
+                      fillColor: Colors.white,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                        borderSide: BorderSide.none,
+                      ),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Пожалуйста, повторите пароль';
+                      }
+                      if (value != _passwordController.text) {
+                        return 'Пароли не совпадают';
+                      }
+                      return null;
+                    },
+                  ),
+                const SizedBox(height: 30),
+
+                // Кнопка "Войти" / "Зарегистрироваться"
+                ElevatedButton(
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate()) {
+                      // Проверка, валидна ли форма
+                      if (isLogin) {
+                        // Вход
+                        UserCredential? userCredential =
+                            await _authService.signInWithEmailAndPassword(
+                                _emailController.text, _passwordController.text);
+                        if (userCredential != null) {
+                          // Успешный вход
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const MainPage()));
+                        } else {
+                          // Ошибка входа
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('Ошибка входа')));
+                        }
+                      } else {
+                        // Регистрация
+                        UserCredential? userCredential =
+                            await _authService.createUserWithEmailAndPassword(
+                                _emailController.text, _passwordController.text);
+                        if (userCredential != null) {
+                          // Успешная регистрация
+                          // Отправка запроса подтверждения почты
+                          await _authService.sendEmailVerification();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content: Text(
+                                      'Регистрация прошла успешно. Проверьте свою почту для подтверждения.')));
+                        } else {
+                          // Ошибка регистрации
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('Ошибка регистрации')));
+                        }
+                      }
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: !isLogin
+                        ? DoDidDoneTheme.lightTheme.colorScheme.primary
+                        : DoDidDoneTheme.lightTheme.colorScheme.secondary,
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                    textStyle: const TextStyle(fontSize: 18),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
+                  child: Text(isLogin ? 'Войти' : 'Зарегистрироваться'),
+                ),
+
               const SizedBox(height: 20),
+              
               // Кнопка перехода на другую страницу
               TextButton(
                 onPressed: () {
