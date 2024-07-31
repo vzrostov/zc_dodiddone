@@ -46,4 +46,15 @@ class AuthService {
       await user.sendEmailVerification();
     }
   }
+
+  // Метод для выхода из аккаунта
+  Future<void> signOut() async {
+    try {
+      // Выход из Firebase
+      await _auth.signOut();
+    } on FirebaseAuthException catch (e) {
+      // Обработка ошибок аутентификации
+      print('Ошибка выхода: ${e.code}');
+    }
+  }
 }
