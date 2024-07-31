@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:zc_dodiddone/pages/login_page.dart';
 import 'package:zc_dodiddone/theme/theme.dart';
 
+import '../pages/main_page.dart';
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -12,6 +14,8 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: DoDidDoneTheme.lightTheme,
       home: const LoginPage(),
+      //home: const MainPage(),
+      
     );
   }
 }
