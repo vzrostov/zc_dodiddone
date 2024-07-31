@@ -1,25 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../models/task.dart';
+
 class TaskItem extends StatelessWidget {
-  final String title;
-  final String description;
-  final DateTime deadline;
+  final Task task;
+  final Function(bool) onCompletedChanged;
 
   const TaskItem({
     Key? key,
-    required this.title,
-    required this.description,
-    required this.deadline,
+    required this.task,
+    required this.onCompletedChanged,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     // Форматируем дату и время с помощью intl
-    String formattedDeadline = DateFormat('dd.MM.yy HH:mm').format(deadline);
+    String formattedDeadline = DateFormat('dd.MM.yy HH:mm').format(
+        task.deadline ?? DateTime.now()); // Use task.deadline
 
     // Определяем градиент в зависимости от срочности
-    Gradient gradient = getGradient(deadline);
+    Gradient gradient = getGradient(task.deadline ?? DateTime.now()); // Use task.deadline
 
     return Card(
       child: Column(
@@ -40,7 +41,7 @@ class TaskItem extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    title,
+                    task.title, // Use task.title
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -75,7 +76,7 @@ class TaskItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  description,
+                  task.description ?? '', // Use task.description
                   style: const TextStyle(fontSize: 14),
                 ),
                 const SizedBox(height: 8),

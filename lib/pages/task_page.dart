@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:zc_dodiddone/widgets/task_item.dart';
+import '../models/task.dart'; // Import the Task model
 
-// Класс для страницы со списком задач
 class TasksPage extends StatefulWidget {
   const TasksPage({Key? key}) : super(key: key);
 
@@ -10,14 +10,13 @@ class TasksPage extends StatefulWidget {
 }
 
 class _TasksPageState extends State<TasksPage> {
-  final List<TaskItem> _tasks = []; // Список задач
+  final List<Task> _tasks = []; // List of Task objects
 
-  // Функция для добавления новой задачи
+  // Function to add a new task
   void _addNewTask() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        // Создаем контроллеры для полей ввода
         final TextEditingController titleController = TextEditingController();
         final TextEditingController descriptionController =
             TextEditingController();
@@ -46,27 +45,29 @@ class _TasksPageState extends State<TasksPage> {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); // Закрываем диалог
+                Navigator.of(context).pop(); // Close the dialog
               },
               child: const Text('Отмена'),
             ),
             TextButton(
               onPressed: () {
-                // Получаем значения из полей ввода
+                // Get values from input fields
                 String title = titleController.text;
                 String description = descriptionController.text;
-                DateTime deadline = DateTime.now(); // Заменяем на получение даты из deadlineController
+                // Parse the deadline from the deadlineController
+                DateTime deadline = DateTime.parse(deadlineController.text);
 
-                // Добавляем новую задачу в список
+                // Add a new Task object to the list
                 setState(() {
-                  _tasks.add(TaskItem(
+                  _tasks.add(Task(
+                    id: '', // You'll need to generate a unique ID here
                     title: title,
                     description: description,
                     deadline: deadline,
                   ));
                 });
 
-                Navigator.of(context).pop(); // Закрываем диалог
+                Navigator.of(context).pop(); // Close the dialog
               },
               child: const Text('Добавить'),
             ),
@@ -85,7 +86,12 @@ class _TasksPageState extends State<TasksPage> {
       body: ListView.builder(
         itemCount: _tasks.length,
         itemBuilder: (context, index) {
-          return _tasks[index];
+          return TaskItem(
+            task: _tasks[index], // Pass the Task object
+            onCompletedChanged: (completed) {
+              // Handle task completion change
+            },
+          );
         },
       ),
       floatingActionButton: FloatingActionButton(

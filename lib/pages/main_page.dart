@@ -101,11 +101,6 @@ class _MainPageState extends State<MainPage> {
             ),
             TextButton(
               onPressed: () {
-                // Получаем значения из полей ввода
-                String title = titleController.text;
-                String description = descriptionController.text;
-                DateTime deadline = selectedDeadline ?? DateTime.now(); // Используем выбранную дату или текущую
-
                 // Добавляем новую задачу в список (предполагаем, что TasksPage имеет список задач)
                 // Нужно передать новую задачу в TasksPage
                 // Например, можно использовать Provider или другой механизм передачи данных
