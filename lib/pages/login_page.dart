@@ -5,7 +5,7 @@ import 'package:zc_dodiddone/services/firebase_auth.dart';
 import '../theme/theme.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  const LoginPage({super.key});
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
@@ -59,7 +59,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       const SizedBox(width: 8),
                       // Добавляем текст "zerocoder"
-                      Text(
+                      const Text(
                         'Zerocoder',
                         style: TextStyle(
                           fontSize: 62,

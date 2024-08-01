@@ -3,7 +3,7 @@ import 'package:zc_dodiddone/widgets/task_item.dart';
 
 // Класс для страницы со списком задач
 class TasksPage extends StatefulWidget {
-  const TasksPage({Key? key}) : super(key: key);
+  const TasksPage({super.key});
 
   @override
   State<TasksPage> createState() => _TasksPageState();

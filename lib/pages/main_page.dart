@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:zc_dodiddone/theme/theme.dart'; // Импортируем intl для форматирования даты
 
 class MainPage extends StatefulWidget {
-  const MainPage({Key? key}) : super(key: key);
+  const MainPage({super.key});
 
   @override
   State<MainPage> createState() => _MainPageState();
@@ -85,7 +85,7 @@ class _MainPageState extends State<MainPage> {
                   },
                   child: Text(
                     selectedDeadline != null
-                        ? 'Выбранный дедлайн: ${DateFormat('dd.MM.yyyy HH:mm').format(selectedDeadline!)}'
+                        ? 'Выбранный дедлайн: ${DateFormat('dd.MM.yyyy HH:mm').format(selectedDeadline)}'
                         : 'Выбрать дедлайн',
                   ),
                 ),
