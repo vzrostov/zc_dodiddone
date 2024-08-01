@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:zc_dodiddone/pages/login_page.dart';
-import 'package:zc_dodiddone/pages/main_page.dart';
 import 'package:zc_dodiddone/theme/theme.dart';
 
 class MyApp extends StatelessWidget {

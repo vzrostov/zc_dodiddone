@@ -5,7 +5,7 @@ import '../models/task.dart';
 import '../widgets/task_item.dart';
 
 class TasksPage extends StatefulWidget {
-  const TasksPage({Key? key}) : super(key: key);
+  const TasksPage({super.key});
 
   @override
   State<TasksPage> createState() => _TasksPageState();
@@ -113,7 +113,7 @@ class _TasksPageState extends State<TasksPage> {
                   },
                   child: Text(
                     selectedDeadline != null
-                        ? 'Выбранный дедлайн: ${DateFormat('dd.MM.yyyy HH:mm').format(selectedDeadline!)}'
+                        ? 'Выбранный дедлайн: ${DateFormat('dd.MM.yyyy HH:mm').format(selectedDeadline)}'
                         : 'Выбрать дедлайн',
                   ),
                 ),

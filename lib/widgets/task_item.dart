@@ -8,10 +8,10 @@ class TaskItem extends StatelessWidget {
   final Function(bool) onCompletedChanged;
 
   const TaskItem({
-    Key? key,
+    super.key,
     required this.task,
     required this.onCompletedChanged,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
