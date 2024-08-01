@@ -7,6 +7,25 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:106999809537:android:d8b281b395a85eaf6d2200",
+        "android_client_info": {
+          "package_name": "vz.zc_dodiddon"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC940xkhBLneZ9H2xTd_EG4M-9DNPKsX4Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:106999809537:android:9d19c364f18116d36d2200",
         "android_client_info": {
           "package_name": "vz.zc_dodiddone"
