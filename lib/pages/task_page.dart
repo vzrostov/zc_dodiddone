@@ -3,7 +3,7 @@ import 'package:zc_dodiddone/widgets/task_item.dart';
 import '../models/task.dart'; // Import the Task model
 
 class TasksPage extends StatefulWidget {
-  const TasksPage({Key? key}) : super(key: key);
+  const TasksPage({super.key});
 
   @override
   State<TasksPage> createState() => _TasksPageState();

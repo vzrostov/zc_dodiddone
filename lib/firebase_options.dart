@@ -17,10 +17,7 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -33,10 +30,7 @@ class DefaultFirebaseOptions {
           'you can reconfigure this by running the FlutterFire CLI again.',
         );
       case TargetPlatform.windows:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for windows - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return windows;
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
@@ -51,7 +45,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyC940xkhBLneZ9H2xTd_EG4M-9DNPKsX4Y',
-    appId: '1:106999809537:android:9d19c364f18116d36d2200',
+    appId: '1:106999809537:android:d8b281b395a85eaf6d2200',
     messagingSenderId: '106999809537',
     projectId: 'dodiddone-43bc8',
     storageBucket: 'dodiddone-43bc8.appspot.com',
@@ -65,4 +59,25 @@ class DefaultFirebaseOptions {
     storageBucket: 'dodiddone-43bc8.appspot.com',
     iosBundleId: 'com.example.zcDodiddone',
   );
+
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyAuQlwWQIQlubKyYpR8GvVdJwCoPFOAcyQ',
+    appId: '1:106999809537:web:8dbcfeec7e882e2a6d2200',
+    messagingSenderId: '106999809537',
+    projectId: 'dodiddone-43bc8',
+    authDomain: 'dodiddone-43bc8.firebaseapp.com',
+    storageBucket: 'dodiddone-43bc8.appspot.com',
+    measurementId: 'G-NWPHGLY6ZM',
+  );
+
+  static const FirebaseOptions windows = FirebaseOptions(
+    apiKey: 'AIzaSyAuQlwWQIQlubKyYpR8GvVdJwCoPFOAcyQ',
+    appId: '1:106999809537:web:672bf48a268f2c9a6d2200',
+    messagingSenderId: '106999809537',
+    projectId: 'dodiddone-43bc8',
+    authDomain: 'dodiddone-43bc8.firebaseapp.com',
+    storageBucket: 'dodiddone-43bc8.appspot.com',
+    measurementId: 'G-CB1HJRL8TG',
+  );
+
 }
