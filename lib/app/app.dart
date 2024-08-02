@@ -3,7 +3,6 @@ import 'package:zc_dodiddone/pages/login_page.dart';
 import 'package:zc_dodiddone/theme/theme.dart';
 
 //import '../pages/main_page.dart';
-import '../screens/profile.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
