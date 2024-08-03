@@ -50,14 +50,14 @@ class _TasksPageState extends State<TasksPage> {
               return Dismissible(
                 key: Key(taskId), // Используем taskId в качестве ключа
                 background: Container(
-                  color: Colors.red,
-                  alignment: Alignment.centerRight,
-                  child: const Icon(Icons.delete, color: Colors.white),
+                  color: Colors.green[200],
+                  alignment: Alignment.centerLeft,
+                  child: const Icon(Icons.arrow_forward, color: Colors.white),
                 ),
                 secondaryBackground: Container(
-                  color: Colors.green,
-                  alignment: Alignment.centerLeft,
-                  child: const Icon(Icons.check_circle, color: Colors.white),
+                  color: Colors.blue[200],
+                  alignment: Alignment.centerRight,
+                  child: const Icon(Icons.arrow_back, color: Colors.white),
                 ),
                 onDismissed: (direction) {
                   if (direction == DismissDirection.endToStart) {
