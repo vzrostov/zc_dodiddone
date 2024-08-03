@@ -63,6 +63,8 @@ class _TasksPageState extends State<TasksPage> {
                     title: title,
                     description: description,
                     deadline: deadline,
+                    taskId: 'task${_tasks.length + 1}', // Generate taskId
+                    onDelete: () {}, // Add onDelete callback
                   ));
                 });
 

@@ -5,21 +5,29 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "zc_dodiddone",
-            "request": "launch",
-            "type": "dart"
-        },
-        {
-            "name": "zc_dodiddone (profile mode)",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "profile"
+            "name": "Flutter: Web",
+            "program": "${workspaceFolder}/lib/main.dart",
+            "deviceId": "chrome", // Указывает на целевой браузер
+            "flutterMode": "debug"
         },
-        {
-            "name": "zc_dodiddone (release mode)",
-            "request": "launch",
-            "type": "dart",
-            "flutterMode": "release"
-        }
+        // {
+        //     "name": "zc_dodiddone",
+        //     "request": "launch",
+        //     "type": "dart"
+        // },
+        // {
+        //     "name": "zc_dodiddone (profile mode)",
+        //     "request": "launch",
+        //     "type": "dart",
+        //     "flutterMode": "profile"
+        // },
+        // {
+        //     "name": "zc_dodiddone (release mode)",
+        //     "request": "launch",
+        //     "type": "dart",
+        //     "flutterMode": "release"
+        // }
     ]
 }

@@ -5,12 +5,16 @@ class TaskItem extends StatelessWidget {
   final String title;
   final String description;
   final DateTime deadline;
+  final String taskId; // Add taskId here
+  final VoidCallback onDelete;
 
   const TaskItem({
     super.key,
     required this.title,
     required this.description,
     required this.deadline,
+    required this.taskId, // Pass taskId to TaskItem
+    required this.onDelete,
   });
 
   @override
