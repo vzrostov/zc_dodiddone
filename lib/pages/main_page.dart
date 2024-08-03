@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:zc_dodiddone/screens/profile.dart';
 import 'package:zc_dodiddone/screens/all_tasks.dart';
@@ -106,10 +107,8 @@ class _MainPageState extends State<MainPage> {
                 String description = descriptionController.text;
                 DateTime deadline = selectedDeadline ?? DateTime.now(); // Используем выбранную дату или текущую
 
-                // Добавляем новую задачу в список (предполагаем, что TasksPage имеет список задач)
-                // Нужно передать новую задачу в TasksPage
-                // Например, можно использовать Provider или другой механизм передачи данных
-                // ...
+                // Добавляем новую задачу в Firestore
+                _addTask(title, description, deadline);
 
                 Navigator.of(context).pop(); // Закрываем диалог
               },
@@ -119,6 +118,22 @@ class _MainPageState extends State<MainPage> {
         );
       },
     );
+  }
+
+  // Функция для добавления задачи в Firestore
+  Future<void> _addTask(String title, String description, DateTime deadline) async {
+    try {
+      // Получаем ссылку на коллекцию "tasks" в Firestore
+      final CollectionReference<Task> tasksCollection = FirebaseFirestore.instance.collection('tasks').withConverter<Task>(
+        fromFirestore: (snapshot, _) => Task.fromFirestore(snapshot),
+        toFirestore: (task, _) => task.toFirestore(),
+      );
+
+      // Добавляем новую задачу в коллекцию
+      await tasksCollection.add(Task(title: title, description: description, deadline: deadline));
+    } catch (e) {
+      print('Ошибка добавления задачи: $e');
+    }
   }
 
   @override

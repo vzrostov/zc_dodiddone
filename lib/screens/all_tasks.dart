@@ -36,6 +36,11 @@ class _TasksPageState extends State<TasksPage> {
 
           final tasks = snapshot.data!.docs;
 
+          if(tasks.isEmpty)
+          {
+            return const Center(child: Text('Нет задач, время отдыхать!'));
+          }
+
           return ListView.builder(
             itemCount: tasks.length,
             itemBuilder: (context, index) {
