@@ -133,7 +133,13 @@ class _MainPageState extends State<MainPage> {
       );
 
       // Добавляем новую задачу в коллекцию
-      await tasksCollection.add(Task(title: title, description: description, deadline: deadline));
+      await tasksCollection.add(Task(
+        title: title, 
+        description: description, 
+        deadline: deadline,
+        completed: false,
+        is_for_today: false,
+        ));
     } catch (e) {
       print('Ошибка добавления задачи: $e');
     }

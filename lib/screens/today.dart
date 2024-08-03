@@ -161,7 +161,13 @@ class _TodayPageState extends State<TodayPage> {
   // Функция для добавления задачи в Firestore
   Future<void> _addTask(String title, String description, DateTime deadline) async {
     try {
-      await _tasksCollection.add(Task(title: title, description: description, deadline: deadline));
+      await _tasksCollection.add(Task(
+        title: title, 
+        description: description, 
+        deadline: deadline,
+        completed: false,
+        is_for_today: false,
+        ));
     } catch (e) {
       print('Ошибка добавления задачи: $e');
     }

@@ -25,10 +25,10 @@ class _TasksPageState extends State<TasksPage> {
       ),
       body: StreamBuilder<QuerySnapshot<Task>>(
         stream: _tasksCollection
-        .where('completed', isEqualTo: false)
-        .where('is_for_today', isEqualTo: false)
-        .orderBy('deadline')
-        .snapshots(),
+            .where('completed', isEqualTo: false)
+            .where('is_for_today', isEqualTo: false)
+            .orderBy('deadline')
+            .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return const Center(child: Text('Ошибка загрузки задач'));
@@ -40,8 +40,7 @@ class _TasksPageState extends State<TasksPage> {
 
           final tasks = snapshot.data!.docs;
 
-          if(tasks.isEmpty)
-          {
+          if (tasks.isEmpty) {
             return const Center(child: Text('Нет задач, время отдыхать!'));
           }
 
@@ -67,7 +66,6 @@ class _TasksPageState extends State<TasksPage> {
                   if (direction == DismissDirection.endToStart) {
                     _deleteTask(taskId);
                   } else if (direction == DismissDirection.startToEnd) {
-                    
                   }
                 },
                 child: TaskItem(
@@ -161,7 +159,13 @@ class _TasksPageState extends State<TasksPage> {
   // Функция для добавления задачи в Firestore
   Future<void> _addTask(String title, String description, DateTime deadline) async {
     try {
-      await _tasksCollection.add(Task(title: title, description: description, deadline: deadline));
+      await _tasksCollection.add(Task(
+        title: title, 
+        description: description, 
+        deadline: deadline,
+        completed: false,
+        is_for_today: false,
+        ));
     } catch (e) {
       print('Ошибка добавления задачи: $e');
     }
@@ -181,14 +185,24 @@ class Task {
   final String title;
   final String description;
   final DateTime deadline;
+  final bool completed;
+  final bool is_for_today;
 
-  Task({required this.title, required this.description, required this.deadline});
+  Task({
+    required this.title,
+    required this.description,
+    required this.deadline,
+    this.completed = false, // Initialize completed to false
+    this.is_for_today = false, // Initialize is_for_today to false
+  });
 
   Map<String, dynamic> toFirestore() {
     return {
       'title': title,
       'description': description,
       'deadline': Timestamp.fromDate(deadline),
+      'completed': completed,
+      'is_for_today': is_for_today,
     };
   }
 
@@ -198,38 +212,8 @@ class Task {
       title: data['title'],
       description: data['description'],
       deadline: (data['deadline'] as Timestamp).toDate(),
+      completed: data['completed'],
+      is_for_today: data['is_for_today'],
     );
   }
 }
-
-
-// import 'package:flutter/material.dart';
-// import '../widgets/task_item.dart';
-
-// class TasksPage extends StatefulWidget {
-//   const TasksPage({super.key});
-//   @override
-//   State<TasksPage> createState() => _TasksPageState();
-// }
-// class _TasksPageState extends State<TasksPage> {
-//   final List<String> _tasks = [
-//     'Купить продукты',
-//     'Записаться на прием к врачу',
-//     'Позвонить маме',
-//     'Сделать уборку',
-//     'Прочитать книгу',
-//   ];
-//   @override
-//   Widget build(BuildContext context) {
-//     return ListView.builder(
-//       itemCount: _tasks.length,
-//       itemBuilder: (context, index) {
-//         return TaskItem(
-//           title: _tasks[index],
-//           description: 'Описание задачи',
-//           deadline: DateTime.now(),
-//         );
-//       },
-//     );
-//   }
-// }
