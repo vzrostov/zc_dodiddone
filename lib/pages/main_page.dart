@@ -22,7 +22,6 @@ class _MainPageState extends State<MainPage> {
     TasksPage(),
     TodayPage(),
     CompletedPage(),
-    ProfilePage(),
   ];
 
   void _onItemTapped(int index) {
@@ -52,6 +51,22 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ProfileScreen()),
+              );
+            }, 
+            icon: const Icon(Icons.person_2),
+          )
+        ],
+        ),
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -81,10 +96,6 @@ class _MainPageState extends State<MainPage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.check_circle),
             label: 'Выполнено',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Профиль',
           ),
         ],
         currentIndex: _selectedIndex,
