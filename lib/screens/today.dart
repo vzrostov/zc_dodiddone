@@ -42,7 +42,7 @@ class _TodayPageState extends State<TodayPage> {
 
           if(tasks.isEmpty)
           {
-            return const Center(child: Text('Нет задач, время отдыхать!'));
+            return const Center(child: Text('Нет задач на сегодня, время отдыхать или создать новую!!'));
           }
 
           return ListView.builder(
@@ -65,9 +65,13 @@ class _TodayPageState extends State<TodayPage> {
                 ),
                 onDismissed: (direction) {
                   if (direction == DismissDirection.endToStart) {
-                    _deleteTask(taskId);
+                    _tasksCollection
+                    .doc (tasks[index].id)
+                    .update({'is_for_today': false, 'completed': false});
                   } else if (direction == DismissDirection.startToEnd) {
-                    
+                  _tasksCollection
+                  .doc (tasks[index].id)
+                  .update({'is_for_today': false, 'completed': true});
                   }
                 },
                 child: TaskItem(

@@ -42,7 +42,7 @@ class _CompletedPageState extends State<CompletedPage> {
 
           if(tasks.isEmpty)
           {
-            return const Center(child: Text('Нет задач, время отдыхать!'));
+            return const Center(child: Text('Все выполненные задачи удалены!'));
           }
 
           return ListView.builder(
@@ -65,9 +65,13 @@ class _CompletedPageState extends State<CompletedPage> {
                 ),
                 onDismissed: (direction) {
                   if (direction == DismissDirection.endToStart) {
-                    _deleteTask(taskId);
+                  _tasksCollection
+                  .doc (tasks[index].id)
+                  .update({'is_for_today': true, 'completed': false});
                   } else if (direction == DismissDirection.startToEnd) {
-                    
+                  _tasksCollection
+                  .doc (tasks[index].id)
+                  .update({'is_for_today': false, 'completed': false});
                   }
                 },
                 child: TaskItem(

@@ -41,7 +41,7 @@ class _TasksPageState extends State<TasksPage> {
           final tasks = snapshot.data!.docs;
 
           if (tasks.isEmpty) {
-            return const Center(child: Text('Нет задач, время отдыхать!'));
+            return const Center(child: Text('Нет задач, время отдыхать или создать новую!'));
           }
 
           return ListView.builder(
@@ -58,14 +58,17 @@ class _TasksPageState extends State<TasksPage> {
                   child: const Icon(Icons.arrow_forward, color: Colors.white),
                 ),
                 secondaryBackground: Container(
-                  color: Colors.blue[200],
+                  color: Colors.red[200],
                   alignment: Alignment.centerRight,
-                  child: const Icon(Icons.arrow_back, color: Colors.white),
+                  child: const Icon(Icons.delete_forever, color: Colors.white),
                 ),
                 onDismissed: (direction) {
                   if (direction == DismissDirection.endToStart) {
                     _deleteTask(taskId);
                   } else if (direction == DismissDirection.startToEnd) {
+                  _tasksCollection
+                  .doc (tasks[index].id)
+                  .update({'is_for_today': true, 'completed': false});
                   }
                 },
                 child: TaskItem(
@@ -78,9 +81,7 @@ class _TasksPageState extends State<TasksPage> {
                   },
                   onEdit: () {  }, 
                   toLeft: () {  
-                  _tasksCollection
-                  .doc (tasks[index].id)
-                  .update({'completed': true});
+                    _deleteTask(taskId);
                   }, 
                   toRight: () {  
                   _tasksCollection
