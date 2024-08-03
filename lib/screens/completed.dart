@@ -1,15 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../widgets/task_item.dart';
+import 'all_tasks.dart';
 
-class TasksPage extends StatefulWidget {
-  const TasksPage({super.key});
+class CompletedPage extends StatefulWidget {
+  const CompletedPage({super.key});
 
   @override
-  State<TasksPage> createState() => _TasksPageState();
+  State<CompletedPage> createState() => _CompletedPageState();
 }
 
-class _TasksPageState extends State<TasksPage> {
+class _CompletedPageState extends State<CompletedPage> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final CollectionReference<Task> _tasksCollection =
       FirebaseFirestore.instance.collection('tasks').withConverter<Task>(
@@ -25,8 +26,7 @@ class _TasksPageState extends State<TasksPage> {
       ),
       body: StreamBuilder<QuerySnapshot<Task>>(
         stream: _tasksCollection
-        .where('completed', isEqualTo: false)
-        .where('is_for_today', isEqualTo: false)
+        .where('completed', isEqualTo: true)
         .orderBy('deadline')
         .snapshots(),
         builder: (context, snapshot) {
@@ -176,60 +176,3 @@ class _TasksPageState extends State<TasksPage> {
     }
   }
 }
-
-class Task {
-  final String title;
-  final String description;
-  final DateTime deadline;
-
-  Task({required this.title, required this.description, required this.deadline});
-
-  Map<String, dynamic> toFirestore() {
-    return {
-      'title': title,
-      'description': description,
-      'deadline': Timestamp.fromDate(deadline),
-    };
-  }
-
-  factory Task.fromFirestore(DocumentSnapshot<Map<String, dynamic>> snapshot) {
-    final data = snapshot.data()!;
-    return Task(
-      title: data['title'],
-      description: data['description'],
-      deadline: (data['deadline'] as Timestamp).toDate(),
-    );
-  }
-}
-
-
-// import 'package:flutter/material.dart';
-// import '../widgets/task_item.dart';
-
-// class TasksPage extends StatefulWidget {
-//   const TasksPage({super.key});
-//   @override
-//   State<TasksPage> createState() => _TasksPageState();
-// }
-// class _TasksPageState extends State<TasksPage> {
-//   final List<String> _tasks = [
-//     'Купить продукты',
-//     'Записаться на прием к врачу',
-//     'Позвонить маме',
-//     'Сделать уборку',
-//     'Прочитать книгу',
-//   ];
-//   @override
-//   Widget build(BuildContext context) {
-//     return ListView.builder(
-//       itemCount: _tasks.length,
-//       itemBuilder: (context, index) {
-//         return TaskItem(
-//           title: _tasks[index],
-//           description: 'Описание задачи',
-//           deadline: DateTime.now(),
-//         );
-//       },
-//     );
-//   }
-// }
