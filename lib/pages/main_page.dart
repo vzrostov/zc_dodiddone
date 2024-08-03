@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:zc_dodiddone/screens/profile.dart';
 import 'package:zc_dodiddone/screens/all_tasks.dart';
+import 'package:zc_dodiddone/screens/completed.dart';
 import 'package:intl/intl.dart';
 import 'package:zc_dodiddone/theme/theme.dart'; // Импортируем intl для форматирования даты
 
@@ -17,8 +18,8 @@ class _MainPageState extends State<MainPage> {
   static const List<Widget> _widgetOptions = <Widget>[
     TasksPage(),
     Text('Сегодня'),
+    CompletedPage(),
     ProfilePage(),
-    Text('Выполнено'),
   ];
 
   void _onItemTapped(int index) {
@@ -166,12 +167,12 @@ class _MainPageState extends State<MainPage> {
             label: 'Сегодня',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Профиль',
-          ),
-          BottomNavigationBarItem(
             icon: Icon(Icons.check_circle),
             label: 'Выполнено',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Профиль',
           ),
         ],
         currentIndex: _selectedIndex,

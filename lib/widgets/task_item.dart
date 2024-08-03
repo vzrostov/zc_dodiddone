@@ -7,6 +7,9 @@ class TaskItem extends StatelessWidget {
   final DateTime deadline;
   final String taskId; // Add taskId here
   final VoidCallback onDelete;
+  final VoidCallback onEdit;
+  final VoidCallback toLeft;
+  final VoidCallback toRight;
 
   const TaskItem({
     super.key,
@@ -14,7 +17,10 @@ class TaskItem extends StatelessWidget {
     required this.description,
     required this.deadline,
     required this.taskId, // Pass taskId to TaskItem
-    required this.onDelete,
+    required this.onDelete, 
+    required this.onEdit,
+    required this.toLeft, 
+    required this.toRight,
   });
 
   @override
