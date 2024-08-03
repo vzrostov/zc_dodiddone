@@ -5,6 +5,7 @@ import 'package:zc_dodiddone/screens/all_tasks.dart';
 import 'package:zc_dodiddone/screens/completed.dart';
 import 'package:intl/intl.dart';
 import 'package:zc_dodiddone/theme/theme.dart';
+import 'package:zc_dodiddone/widgets/dialog_widget.dart';
 
 import '../screens/today.dart'; // Импортируем intl для форматирования даты
 
@@ -35,114 +36,17 @@ class _MainPageState extends State<MainPage> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        // Создаем контроллеры для полей ввода
-        final TextEditingController titleController = TextEditingController();
-        final TextEditingController descriptionController =
-            TextEditingController();
-        DateTime? selectedDeadline; // Переменная для хранения выбранной даты
+        String? _title = '';
+        String? _description = '';
+        DateTime? _deadline;
 
-        return AlertDialog(
-          title: const Text('Добавить задачу'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                controller: titleController,
-                decoration: const InputDecoration(labelText: 'Название'),
-              ),
-              TextField(
-                controller: descriptionController,
-                decoration: const InputDecoration(labelText: 'Описание'),
-              ),
-              // Кнопка для выбора дедлайна
-              Padding(
-                padding: const EdgeInsets.only(top: 20.0), // Добавляем отступ сверху
-                child: ElevatedButton(
-                  onPressed: () {
-                    // Открываем календарь для выбора даты и времени
-                    showDatePicker(
-                      context: context,
-                      initialDate: DateTime.now(),
-                      firstDate: DateTime.now(),
-                      lastDate: DateTime(2100),
-                    ).then((pickedDate) {
-                      if (pickedDate != null) {
-                        // Открываем TimePicker, если дата выбрана
-                        showTimePicker(
-                          context: context,
-                          initialTime: TimeOfDay.now(),
-                        ).then((pickedTime) {
-                          if (pickedTime != null) {
-                            setState(() {
-                              selectedDeadline = DateTime(
-                                pickedDate.year,
-                                pickedDate.month,
-                                pickedDate.day,
-                                pickedTime.hour,
-                                pickedTime.minute,
-                              );
-                            });
-                          }
-                        });
-                      }
-                    });
-                  },
-                  child: Text(
-                    selectedDeadline != null
-                        ? 'Выбранный дедлайн: ${DateFormat('dd.MM.yyyy HH:mm').format(selectedDeadline)}'
-                        : 'Выбрать дедлайн',
-                  ),
-                ),
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(); // Закрываем диалог
-              },
-              child: const Text('Отмена'),
-            ),
-            TextButton(
-              onPressed: () {
-                // Получаем значения из полей ввода
-                String title = titleController.text;
-                String description = descriptionController.text;
-                DateTime deadline = selectedDeadline ?? DateTime.now(); // Используем выбранную дату или текущую
-
-                // Добавляем новую задачу в Firestore
-                _addTask(title, description, deadline);
-
-                Navigator.of(context).pop(); // Закрываем диалог
-              },
-              child: const Text('Добавить'),
-            ),
-          ],
+        return DialogWidget(
+          title: _title,
+          description: _description,
+          deadline: _deadline,
         );
       },
     );
-  }
-
-  // Функция для добавления задачи в Firestore
-  Future<void> _addTask(String title, String description, DateTime deadline) async {
-    try {
-      // Получаем ссылку на коллекцию "tasks" в Firestore
-      final CollectionReference<Task> tasksCollection = FirebaseFirestore.instance.collection('tasks').withConverter<Task>(
-        fromFirestore: (snapshot, _) => Task.fromFirestore(snapshot),
-        toFirestore: (task, _) => task.toFirestore(),
-      );
-
-      // Добавляем новую задачу в коллекцию
-      await tasksCollection.add(Task(
-        title: title, 
-        description: description, 
-        deadline: deadline,
-        completed: false,
-        is_for_today: false,
-        ));
-    } catch (e) {
-      print('Ошибка добавления задачи: $e');
-    }
   }
 
   @override
