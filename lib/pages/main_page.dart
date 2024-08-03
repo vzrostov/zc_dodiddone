@@ -32,7 +32,7 @@ class _MainPageState extends State<MainPage> {
   }
 
   // Функция для добавления новой задачи
-  void _addNewTask() {
+  void _showAddTaskDialog() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -91,7 +91,7 @@ class _MainPageState extends State<MainPage> {
         onTap: _onItemTapped,
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _addNewTask,
+        onPressed: _showAddTaskDialog,
         child: const Icon(Icons.add),
       ),
     );

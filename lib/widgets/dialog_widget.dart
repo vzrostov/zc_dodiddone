@@ -4,31 +4,39 @@ import 'package:intl/intl.dart';
 import 'package:zc_dodiddone/screens/all_tasks.dart';
 
 class DialogWidget extends StatefulWidget {
-  const DialogWidget({super.key, this.title, this.description, this.deadline});
+  const DialogWidget({super.key, this.title, this.description, this.deadline, this.taskId});
 
   final String? title;
   final String? description;
   final DateTime? deadline; // Переменная для хранения выбранной даты
+  final String? taskId;
 
   @override
   State<DialogWidget> createState() => _DialogWidgetState();
 }
 
 class _DialogWidgetState extends State<DialogWidget> {
-
   // Создаем контроллеры для полей ввода
-  String? title;
-  String? description;
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
   DateTime? _deadline; // Переменная для хранения выбранной даты
+  String? _taskId;
 
   @override
   void initState() {
     super.initState();
-    title = widget.title;
-    description = widget.description;
+    _titleController.text = widget.title ?? '';
+    _descriptionController.text = widget.description ?? '';
     _deadline = widget.deadline;
+    _taskId = widget.taskId;
   }
 
+  @override
+  void dispose() {
+    _titleController.dispose();
+    _descriptionController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,11 +46,11 @@ class _DialogWidgetState extends State<DialogWidget> {
         mainAxisSize: MainAxisSize.min,
         children: [
           TextField(
-            onChanged: (value) => title = value,
+            controller: _titleController,
             decoration: const InputDecoration(labelText: 'Название'),
           ),
           TextField(
-            onChanged: (value) => description = value,
+            controller: _descriptionController,
             decoration: const InputDecoration(labelText: 'Описание'),
           ),
           // Кнопка для выбора дедлайна
@@ -58,7 +66,7 @@ class _DialogWidgetState extends State<DialogWidget> {
                   // Открываем календарь для выбора даты и времени
                   showDatePicker(
                     context: context,
-                    initialDate: DateTime.now(),
+                    initialDate: _deadline ?? DateTime.now(),
                     firstDate: DateTime.now(),
                     lastDate: DateTime(2100),
                   ).then((pickedDate) {
@@ -66,7 +74,7 @@ class _DialogWidgetState extends State<DialogWidget> {
                       // Открываем TimePicker, если дата выбрана
                       showTimePicker(
                         context: context,
-                        initialTime: TimeOfDay.now(),
+                        initialTime: TimeOfDay.fromDateTime(_deadline ?? DateTime.now()),
                       ).then((pickedTime) {
                         if (pickedTime != null) {
                           setState(() {
@@ -98,12 +106,24 @@ class _DialogWidgetState extends State<DialogWidget> {
           child: const Text('Отмена'),
         ),
         TextButton(
-          onPressed: () {
+          onPressed: () async {
             // Получаем значения из полей ввода
+            String title = _titleController.text;
+            String description = _descriptionController.text;
             DateTime deadline = _deadline ?? DateTime.now(); // Используем выбранную дату или текущую
 
-            // Добавляем новую задачу в Firestore
-            _addTask(title ?? '', description ?? '', deadline);
+            if(widget.taskId != null)
+            {
+              await FirebaseFirestore.instance.collection('tasks').doc(widget.taskId).update({
+                'title': title,
+                'description': description,
+                'deadline': deadline,
+              });
+            }
+            else
+            {
+              _addTask(title, description, deadline);
+            }
 
             Navigator.of(context).pop(); // Закрываем диалог
           },

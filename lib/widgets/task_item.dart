@@ -65,14 +65,16 @@ class TaskItem extends StatelessWidget {
                     // Кнопка "Редактировать"
                     IconButton(
                       onPressed: () {
-                        // Обработка нажатия на кнопку "Редактировать"
-                        // Например, можно открыть диалог для редактирования задачи
-                        print('Задача редактируется!');
+                        onEdit();
                       },
                       icon: const Icon(Icons.edit),
                     ),
                     // Кнопка "Удалить"
-                    IconButton(onPressed: () {}, icon: const Icon(Icons.delete)),
+                    IconButton(
+                      onPressed: () {
+                        onDelete();
+                      }, 
+                      icon: const Icon(Icons.delete)),
                   ],
                 ),
               ],

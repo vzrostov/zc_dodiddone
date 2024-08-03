@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:zc_dodiddone/widgets/dialog_widget.dart';
 import '../widgets/task_item.dart';
 
 class TasksPage extends StatefulWidget {
@@ -79,7 +80,19 @@ class _TasksPageState extends State<TasksPage> {
                   onDelete: () {
                     _deleteTask(taskId);
                   },
-                  onEdit: () {  }, 
+                  onEdit: () {  
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return DialogWidget(
+                          title: taskData.title,
+                          description: taskData.description,
+                          deadline: taskData.deadline,
+                          taskId: taskId,
+                          );
+                      },
+                    );
+                  }, 
                   toLeft: () {  
                     _deleteTask(taskId);
                   }, 
