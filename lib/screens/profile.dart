@@ -361,6 +361,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ],
                 ),
+              ],
+            ),
                 if (_user != null && !_user!.emailVerified)
                   Positioned(
                     bottom: 0,
@@ -391,8 +393,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ),
                   ),
-              ],
-            ),
 
             const SizedBox(height: 20),
 
@@ -434,7 +434,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ElevatedButton(
               onPressed: () async {
                 await _authService.signOut();
-                Navigator.pushReplacementNamed(context, '/');
+                Navigator.pushReplacementNamed(context, '/login');
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor:
