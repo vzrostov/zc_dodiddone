@@ -60,7 +60,8 @@ class _MainPageState extends State<MainPage> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const ProfileScreen()),
+                MaterialPageRoute(builder: (context) => 
+                  const ProfileScreen()),
               );
             }, 
             icon: const Icon(Icons.person_2),
